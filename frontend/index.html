@@ -2,6 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
   <link rel="stylesheet" href="css/material-components-web.min.css">
   <link rel="stylesheet" href="css/icon.css">
   <script src="js/material-components-web.min.js"></script>
@@ -195,7 +196,7 @@
 </body>
 <script>
 	const scheme="https";
-	const apiroot="example.com";
+	const apiroot="eve.nukedgroup.free.hr";
 	const refresh_button=new mdc.iconButton.MDCIconButtonToggle(document.querySelector('#refresh'));
 	const restart_button=new mdc.iconButton.MDCIconButtonToggle(document.querySelector('#restart'));
 	refresh_button.initialize();
@@ -205,7 +206,8 @@
     function sleep(ms) {
 		return new Promise(resolve => setTimeout(resolve, ms));
 	}
-    const refresh = ()=>{
+
+async function refresh (){
     document.querySelector('.banner').classList.remove("not-available");
     document.querySelector('.banner').classList.remove("available");
     document.querySelector('.banner').classList.remove("restarting");
@@ -215,10 +217,11 @@ document.querySelector('#status').innerText="正在刷新";
 		refresh_button.root.disabled=true;
         refresh_button.root.childNodes[5].style.display = "block";
         refresh_button.root.childNodes[3].style.display = "none";
-		fetch(`${scheme}\:\/\/${apiroot}\/api\?action\=probe`)
-		.then(response => response.text())
-		.then(data => {
-			if (data === 'true') {
+try {
+        const response = await fetch(`${scheme}\:\/\/${apiroot}\/api\?action\=probe`);
+        const data = await response.text();
+
+        if (data === 'true') {
 				document.querySelector('#loadanim').style.display="none";
 document.querySelector('#status-indicator').innerText="check_circle";
 document.querySelector('#status').innerText="正常";
@@ -232,19 +235,20 @@ document.querySelector('#status').innerText="无响应";
 document.querySelector('.banner').classList.add("not-available");
 				document.querySelector('#status-indicator').style.display="block";
 			}
-		})
-		.catch(error => {
-			console.error('Error:', error);
-			document.querySelector('#loadanim').style.display="none";
+    } catch (error) {
+        console.error('Error:', error);
+document.querySelector('#loadanim').style.display="none";
 document.querySelector('#status-indicator').innerText="cancel";
 document.querySelector('#status').innerText="无响应";
 document.querySelector('.banner').classList.add("not-available");
 				document.querySelector('#status-indicator').style.display="block";
-		});
+    }
+
 		refresh_button.root.disabled=false;
         refresh_button.root.childNodes[5].style.display = "none";
         refresh_button.root.childNodes[3].style.display = "block";
     }
+
     async function restart () {
         document.querySelector('.banner').classList.add("restarting");
   document.querySelector('#loadanim').style.display="block";
