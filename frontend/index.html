@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/material-components-web.min.css">
+  <link rel="stylesheet" href="css/icon.css">
+  <script src="js/material-components-web.min.js"></script>
+  <style>
+    :root {
+		--mdc-theme-primary: #174a7a;
+		--mdc-theme-secondary: #018786;
+		--mdc-theme-background: #fff;
+		--mdc-theme-surface: #fff;
+		--mdc-theme-error: #b00020;
+		--mdc-theme-on-primary: #fff;
+		--mdc-theme-on-secondary: #fff;
+		--mdc-theme-on-surface: #000;
+		--mdc-theme-on-error: #fff;
+		--mdc-theme-text-primary-on-background: rgba(0, 0, 0, 0.87);
+		--mdc-theme-text-secondary-on-background: rgba(0, 0, 0, 0.54);
+		--mdc-theme-text-hint-on-background: rgba(0, 0, 0, 0.38);
+		--mdc-theme-text-disabled-on-background: rgba(0, 0, 0, 0.38);
+		--mdc-theme-text-icon-on-background: rgba(0, 0, 0, 0.38);
+		--mdc-theme-text-primary-on-light: rgba(0, 0, 0, 0.87);
+		--mdc-theme-text-secondary-on-light: rgba(0, 0, 0, 0.54);
+		--mdc-theme-text-hint-on-light: rgba(0, 0, 0, 0.38);
+		--mdc-theme-text-disabled-on-light: rgba(0, 0, 0, 0.38);
+		--mdc-theme-text-icon-on-light: rgba(0, 0, 0, 0.38);
+		--mdc-theme-text-primary-on-dark: white;
+		--mdc-theme-text-secondary-on-dark: rgba(255, 255, 255, 0.7);
+		--mdc-theme-text-hint-on-dark: rgba(255, 255, 255, 0.5);
+		--mdc-theme-text-disabled-on-dark: rgba(255, 255, 255, 0.5);
+		--mdc-theme-text-icon-on-dark: rgba(255, 255, 255, 0.5);
+		--mdc-outlined-button-outline-color: rgba(255, 255, 255, 0.12);
+    }
+	body {
+		margin: 0px;
+	}
+	.menubutton {
+		transition: ease-in-out 0.2s;
+		border-radius: 50%;
+	}
+    .menubutton:hover {
+		box-shadow: 0px 0px 10px 1px #00000033;
+    }
+    .banner {
+		color: #777;
+		width: 100%;
+		background-color: #333;
+		display: flex;
+		justify-content: center;
+    }
+    .available {
+		color: #2b8f29;
+    }
+    .not-available {
+		color: #8f2929;
+    }
+    .restarting {
+		color: #9ea124;
+    }
+    .icon {
+		font-size: 128px;
+    }
+    .brand{
+		
+    }
+    #status {
+		font-size:24px;
+    }
+    .title {
+		color:#ddd !important;
+    }
+    .button .mdc-button__icon{
+		color: #ddd;
+		font-size: 18px;
+    }
+    .button .mdc-button__label{
+		color: #ddd;
+		font-size: 18px;
+    }
+    .button:disabled .mdc-button__label{
+		color: #666;
+		font-size: 18px;
+    }
+	.loading{
+		width: 18px !important;
+		height: 18px !important;
+	}
+	.load {
+		margin-top: 18px;
+		height: 128px !important;
+		width: 128px !important;
+	}
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124;
+  }
+}
+.mdc-circular-progress {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: rotate 2s linear infinite;
+}
+.mdc-circular-progress__path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke: var(--mdc-theme-primary);
+}
+
+  </style>
+</head>
+
+<body>
+<header class="mdc-top-app-bar">
+  <div class="mdc-top-app-bar__row">
+    <section class="bar mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+      <!--button class="menubutton material-icons mdc-top-app-bar__navigation-icon mdc-icon-button" aria-label="Open navigation menu">menu</button-->
+      <span class="mdc-top-app-bar__title">EVEmu Status</span>
+    </section>
+    <!--section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+      <button class="material-icons mdc-top-app-bar__action-item mdc-icon-button" aria-label="Favorite">favorite</button>
+    </section-->
+  </div>
+</header>
+<main class="mdc-top-app-bar--fixed-adjust">
+  <div class="banner mdc-layout-grid" style="min-height: calc(100vh - 64px);">
+    <div class="mdc-layout-grid__inner centered">
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-12-phone">
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-12-phone">
+        <div class="brand">
+          <i style="display: none;" id="status-indicator" class="icon material-icons">sync</i>
+          <span id="loadanim" class="load material-icons">
+          <svg class="mdc-circular-progress" viewBox="25 25 50 50">
+    <circle class="mdc-circular-progress__path" cx="50" cy="50" r="20" fill="none" stroke-width="4" stroke-miterlimit="10"></circle>
+</svg>
+		  </span>
+        </div>
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-12-phone">
+        <div class="brand">
+          <h1 class="title">服务器状态</h1>
+          <p id="status">正在刷新</p>
+        </div>
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-12-phone">
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-1-desktop mdc-layout-grid__cell--span-4-phone">
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-phone">
+		<button id="refresh" class="button mdc-button mdc-button--outlined mdc-button--icon-leading">
+  <span class="mdc-button__ripple"></span>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">refresh</i>
+  <span style="display: none;" class="mdc-button__icon" aria-hidden="true"><svg class="loading mdc-circular-progress" viewBox="25 25 50 50">
+    <circle class="mdc-circular-progress__path" cx="50" cy="50" r="20" fill="none" stroke-width="8" stroke-miterlimit="10"></circle>
+</svg></span>
+  <span class="mdc-button__label">刷新服务状态</span>
+</button>
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-4-phone">
+      <button id="restart" class="button mdc-button mdc-button--outlined mdc-button--icon-leading">
+  <span class="mdc-button__ripple"></span>
+  <i class="material-icons mdc-button__icon" aria-hidden="true">power_settings_new</i>
+<span style="display: none;" class="mdc-button__icon" aria-hidden="true"><svg class="loading mdc-circular-progress" viewBox="25 25 50 50">
+    <circle class="mdc-circular-progress__path" cx="50" cy="50" r="20" fill="none" stroke-width="8" stroke-miterlimit="10"></circle>
+</svg></span>
+  <span class="mdc-button__label">重启EVE服务</span>
+</button>
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-1-desktop mdc-layout-grid__cell--span-4-phone">
+      </div>
+      <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-12-phone">
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+<script>
+	const scheme="https";
+	const apiroot="example.com";
+	const refresh_button=new mdc.iconButton.MDCIconButtonToggle(document.querySelector('#refresh'));
+	const restart_button=new mdc.iconButton.MDCIconButtonToggle(document.querySelector('#restart'));
+	refresh_button.initialize();
+	restart_button.initialize();
+	refresh_button.listen('click', ()=>{refresh()});
+    restart_button.listen('click', ()=>{restart()});
+    function sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
+	}
+    const refresh = ()=>{
+    document.querySelector('.banner').classList.remove("not-available");
+    document.querySelector('.banner').classList.remove("available");
+    document.querySelector('.banner').classList.remove("restarting");
+  document.querySelector('#loadanim').style.display="block";
+document.querySelector('#status').innerText="正在刷新";
+				document.querySelector('#status-indicator').style.display="none";
+		refresh_button.root.disabled=true;
+        refresh_button.root.childNodes[5].style.display = "block";
+        refresh_button.root.childNodes[3].style.display = "none";
+		fetch(`${scheme}\:\/\/${apiroot}\/api\?action\=probe`)
+		.then(response => response.text())
+		.then(data => {
+			if (data === 'true') {
+				document.querySelector('#loadanim').style.display="none";
+document.querySelector('#status-indicator').innerText="check_circle";
+document.querySelector('#status').innerText="正常";
+document.querySelector('.banner').classList.add("available");
+				document.querySelector('#status-indicator').style.display="block";
+			} 
+			if (data === 'false') {
+				document.querySelector('#loadanim').style.display="none";
+document.querySelector('#status-indicator').innerText="cancel";
+document.querySelector('#status').innerText="无响应";
+document.querySelector('.banner').classList.add("not-available");
+				document.querySelector('#status-indicator').style.display="block";
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+			document.querySelector('#loadanim').style.display="none";
+document.querySelector('#status-indicator').innerText="cancel";
+document.querySelector('#status').innerText="无响应";
+document.querySelector('.banner').classList.add("not-available");
+				document.querySelector('#status-indicator').style.display="block";
+		});
+		refresh_button.root.disabled=false;
+        refresh_button.root.childNodes[5].style.display = "none";
+        refresh_button.root.childNodes[3].style.display = "block";
+    }
+    async function restart () {
+        document.querySelector('.banner').classList.add("restarting");
+  document.querySelector('#loadanim').style.display="block";
+document.querySelector('#status').innerText="正在重启动";
+				document.querySelector('#status-indicator').style.display="none";
+		restart_button.root.disabled=true;
+        restart_button.root.childNodes[5].style.display = "block";
+        restart_button.root.childNodes[3].style.display = "none";
+		try {
+        const response = await fetch(`${scheme}\:\/\/${apiroot}\/api\?action\=restart`);
+        const data = await response.text();
+
+        if (data !== '') {
+            await sleep(2000);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+		restart_button.root.disabled=false;
+        restart_button.root.childNodes[5].style.display = "none";
+        restart_button.root.childNodes[3].style.display = "block";
+        refresh();
+    }
+    refresh();
+</script>
+</html>
